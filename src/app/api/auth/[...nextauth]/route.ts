@@ -4,7 +4,6 @@ import bcrypt from "bcryptjs";
 import connectDB from "@/lib/dbConnect";
 import User from "@/models/User";
 
-// Define your NextAuth configuration
 const handler = NextAuth({
   providers: [
     CredentialsProvider({
@@ -51,4 +50,4 @@ const handler = NextAuth({
   },
 });
 
-export { handler as GET, handler as POST }; // ✅ Only export these
+export { handler as GET, handler as POST }; // ✅ App Router compatible
