@@ -1,10 +1,10 @@
-import NextAuth, { NextAuthOptions } from "next-auth";
+import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-import User from "@/models/User";
 import connectDB from "@/lib/dbConnect";
+import User from "@/models/User";
 
-export const authOptions: NextAuthOptions = {
+const handler = NextAuth({
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -15,25 +15,35 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         await connectDB();
 
-        const email = credentials?.email || "";
-        if (!/^n\d{8}@humber\.ca$/i.test(email)) {
-          throw new Error("Only Humber n-ID emails are allowed.");
+        const user = await User.findOne({ email: credentials?.email });
+
+        if (!user) {
+          throw new Error("No user found with that email.");
         }
 
-        const user = await User.findOne({ email });
-        if (!user) throw new Error("No user found with that email.");
+        const isValidPassword = await bcrypt.compare(
+          credentials!.password,
+          user.password
+        );
 
-        const isValidPassword = await bcrypt.compare(credentials!.password, user.password);
-        if (!isValidPassword) throw new Error("Invalid credentials");
+        if (!isValidPassword) {
+          throw new Error("Invalid credentials");
+        }
 
-        return { id: user._id.toString(), name: user.name, email: user.email };
+        return {
+          id: user._id.toString(),
+          name: user.name,
+          email: user.email,
+        };
       },
     }),
   ],
   pages: {
     signIn: "/auth/login",
   },
-  session: { strategy: "jwt" },
+  session: {
+    strategy: "jwt",
+  },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
@@ -50,7 +60,6 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
-};
+});
 
-const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
