@@ -4,9 +4,9 @@ import connectDB from "@/lib/dbConnect"; // Ensure your database connection is p
 import Event from "@/models/Event"; // Assuming you have the Event model
 
 
-const RAPIDAPI_KEY = "a0eccd2f4cmsh1d00ade4b6803cfp1d291djsn0675ad7d674b"; // Replace with your actual key
-const RAPIDAPI_HOST = "real-time-instagram-scraper-api1.p.rapidapi.com";
-const INSTAGRAM_USERNAME = "lifeathumber";
+const RAPIDAPI_KEY = process.env.RAPIDAPI_KEY!;
+const RAPIDAPI_HOST = process.env.RAPIDAPI_HOST!;
+const INSTAGRAM_USERNAME = process.env.INSTAGRAM_USERNAME!;
 
 // Define an interface for Instagram items
 interface InstagramItem {
