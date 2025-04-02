@@ -23,7 +23,7 @@ export default function LoginPage() {
       return;
     }
 
-    const res = await signIn("credentials", { email, password, redirect: false });
+    const res = await signIn("credentials", { email, password, redirect: false, callbackUrl: "/"});
 
     if (res?.error) {
       setError(res.error);
