@@ -22,7 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       setIsAuthenticated(false);
       // ✅ Prevent infinite redirect loops by checking pathname
       if (pathname !== "/auth/login" && pathname !== "/auth/signup") {
-        router.replace("/auth/login");
+        // router.replace("/auth/login");
       }
     }
   }, [pathname]); // ✅ Dependencies ensure the effect re-runs on route change
