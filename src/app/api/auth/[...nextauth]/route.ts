@@ -48,4 +48,5 @@ const handler = NextAuth({
   },
 });
 
+// ✅ This is correct for App Router
 export { handler as GET, handler as POST };
