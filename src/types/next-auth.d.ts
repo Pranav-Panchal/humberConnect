@@ -1,7 +1,7 @@
-import { Session } from "next-auth";
+// src/types/next-auth.d.ts
+import NextAuth from "next-auth";
 import { JWT } from "next-auth/jwt";
 
-// ✅ Your existing session augmentation
 declare module "next-auth" {
   interface Session {
     user: {
@@ -10,9 +10,14 @@ declare module "next-auth" {
       name: string;
     };
   }
+
+  interface User {
+    id: string;
+    email: string;
+    name: string;
+  }
 }
 
-// ✅ Add JWT augmentation below (don't remove anything above)
 declare module "next-auth/jwt" {
   interface JWT {
     id: string;

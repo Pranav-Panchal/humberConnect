@@ -23,12 +23,18 @@ export default function LoginPage() {
       return;
     }
 
-    const res = await signIn("credentials", { email, password, redirect: false, callbackUrl: "/"});
-
+    const res = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+      callbackUrl: "/",
+    });
+    
     if (res?.error) {
       setError(res.error);
-    } else {
-      router.push("/");
+    } else if (res?.ok && res?.url) {
+      // ✅ force redirect manually
+      router.push(res.url);
     }
   };
 
